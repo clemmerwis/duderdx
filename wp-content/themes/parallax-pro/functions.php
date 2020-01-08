@@ -18,7 +18,7 @@ include_once( get_stylesheet_directory() . '/lib/theme-defaults.php' );
 
 // Set Localization (do not remove).
 add_action( 'after_setup_theme', 'parallax_localization_setup' );
-function parallax_localization_setup(){
+function parallax_localization_setup() {
 	load_child_theme_textdomain( 'parallax-pro', get_stylesheet_directory() . '/languages' );
 }
 
@@ -45,7 +45,7 @@ define( 'CHILD_THEME_NAME', 'Parallax Pro' );
 define( 'CHILD_THEME_URL', 'http://my.studiopress.com/themes/parallax/' );
 define( 'CHILD_THEME_VERSION', '1.3.3' );
 
-// Enqueue scripts and styles.
+// Enqueue scripts and styles on every page
 add_action( 'wp_enqueue_scripts', 'parallax_enqueue_scripts_styles' );
 function parallax_enqueue_scripts_styles() {
 
@@ -219,6 +219,51 @@ genesis_register_sidebar( array(
 	'description' => __( 'This is the home section 5 section.', 'parallax-pro' ),
 ) );
 
-@ini_set( 'upload_max_size' , '64M' );
-@ini_set( 'post_max_size', '64M');
-@ini_set( 'max_execution_time', '300' );
+//* Register Test widget area on test page
+genesis_register_widget_area(
+	array(
+		'id'          => "test",
+		'name'        => __( "Test", 'parallax-pro' ),
+		'description' => __( "This is the Test widget.", 'parallax-pro' ),
+	)
+);
+
+
+// Customize entry meta footer to say categorized vs filed uunder
+add_filter( 'genesis_post_meta', 'cjl_post_meta_filter' );
+function cjl_post_meta_filter( $post_meta ) {
+	$post_meta = '[post_categories before="Categories: "] [post_tags before="Tagged as: "]';
+	return $post_meta;
+}
+
+// alter markup from p tag to div tag
+remove_action( 'genesis_entry_footer', 'genesis_post_meta' );
+add_action( 'genesis_entry_footer', 'cjl_genesis_post_meta' );
+function cjl_genesis_post_meta() {
+
+	if ( ! post_type_supports( get_post_type(), 'genesis-entry-meta-after-content' ) ) {
+		return;
+	}
+
+	$post_meta = wp_kses_post( genesis_get_option( 'entry_meta_after_content' ) );
+	$filtered  = apply_filters( 'genesis_post_meta', $post_meta );
+
+	if ( '' === trim( $filtered ) ) {
+		return;
+	}
+
+	genesis_markup(
+		[
+			'open'    => '<div %s>',
+			'close'   => '</div>',
+			'content' => genesis_strip_p_tags( $filtered ),
+			'context' => 'entry-meta-after-content',
+		]
+	);
+
+}
+
+
+// @ini_set( 'upload_max_size' , '64M' );
+// @ini_set( 'post_max_size', '64M');
+// @ini_set( 'max_execution_time', '300' );

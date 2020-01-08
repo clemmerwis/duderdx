@@ -117,6 +117,7 @@ function genesis_standard_loop() {
 			 * @since 2.0.0
 			 */
 			do_action( 'genesis_entry_content' );
+			
 			genesis_markup(
 				[
 					'close'   => '</div>',

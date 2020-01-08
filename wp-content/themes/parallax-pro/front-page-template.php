@@ -100,8 +100,8 @@ function parallax_template_inline_css() {
 
 	$handle  = defined( 'CHILD_THEME_NAME' ) && CHILD_THEME_NAME ? sanitize_title_with_dashes( CHILD_THEME_NAME ) : 'child-theme';
 
-    $acf_1   = wp_get_attachment_image_url( get_post_meta( get_the_ID(), 'parallax_image_one', true ), 'full' );
-    $image_1 = $acf_1 ? $acf_1 : sprintf( '%s/images/bg-1.jpg', get_stylesheet_directory_uri() );
+  $acf_1   = wp_get_attachment_image_url( get_post_meta( get_the_ID(), 'parallax_image_one', true ), 'full' );
+  $image_1 = $acf_1 ? $acf_1 : sprintf( '%s/images/bg-1.jpg', get_stylesheet_directory_uri() );
     
 	$background_one = sprintf( 'background-image: url(%s);', $image_1 );
 
