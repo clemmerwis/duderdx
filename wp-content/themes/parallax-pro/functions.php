@@ -262,7 +262,9 @@ function cjl_genesis_post_meta() {
 	);
 
 }
-	
+
+// Unhide wp custom fields while using ACF
 add_filter('acf/settings/remove_wp_meta_box', '__return_false');
 
+// Add image size - true argument to makes it crop exactly, not proportionally
 add_image_size( 'smaller-thumb-hardcrop', 100, 100, true );

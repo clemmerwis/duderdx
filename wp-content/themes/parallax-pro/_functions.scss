@@ -1,0 +1,20 @@
+
+// float clearing
+@mixin clearfix_after {
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+
+@mixin clearfix_before {
+  &:before {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+
+
+
