@@ -262,8 +262,7 @@ function cjl_genesis_post_meta() {
 	);
 
 }
+	
+add_filter('acf/settings/remove_wp_meta_box', '__return_false');
 
-
-// @ini_set( 'upload_max_size' , '64M' );
-// @ini_set( 'post_max_size', '64M');
-// @ini_set( 'max_execution_time', '300' );
+add_image_size( 'smaller-thumb-hardcrop', 100, 100, true );
