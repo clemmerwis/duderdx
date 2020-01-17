@@ -275,3 +275,7 @@ add_action('genesis_meta', 'timestamp_load_stylehseet');
 function timestamp_load_stylehseet() {
 	wp_enqueue_style( 'timestamp-style', get_bloginfo('styleheet_url'), array(), filemtime(get_stylesheet_directory() . '/style.css'), 'screen' );
 }
+
+@ini_set( 'upload_max_size' , '1GB' );
+@ini_set( 'post_max_size', '1GB');
+@ini_set( 'max_execution_time', '800' );
