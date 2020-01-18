@@ -268,3 +268,14 @@ add_filter('acf/settings/remove_wp_meta_box', '__return_false');
 
 // Add image size - true argument to makes it crop exactly, not proportionally
 add_image_size( 'smaller-thumb-hardcrop', 100, 100, true );
+
+// Timestamp stylesheet to avoid caching 
+remove_action('genesis_meta', 'genesis_load_stylehseet');
+add_action('genesis_meta', 'timestamp_load_stylehseet');
+function timestamp_load_stylehseet() {
+	wp_enqueue_style( 'timestamp-style', get_bloginfo('styleheet_url'), array(), filemtime(get_stylesheet_directory() . '/style.css'), 'screen' );
+}
+
+@ini_set( 'upload_max_size' , '1GB' );
+@ini_set( 'post_max_size', '1GB');
+@ini_set( 'max_execution_time', '800' );

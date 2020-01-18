@@ -26,7 +26,7 @@ add_action( 'genesis_loop', 'test_widget' );
 function test_widget() {
   genesis_widget_area(
       'test', array(
-        'before' => '<div class="one-fourth first test widget-area"><div class="wrap">',
+        'before' => '<div class="one-half first test widget-area"><div class="wrap">',
         'after'  => '</div></div><div class="clearfix"></div>',
       ) 
   );
@@ -68,67 +68,63 @@ add_action('genesis_loop', 'cjl_custom_loop');
 function cjl_custom_loop() {
   global $paged;
  
-  // Accepts WP_Query args 
-  // (http://codex.wordpress.org/Class_Reference/WP_Query)
   $args = array(
 		'post_type'      => 'post',
-		'posts_per_page' => 5,
+		'posts_per_page' => 3,
 		'post_status'    => 'publish',
 	);
 
   genesis_custom_loop( $args );
 }
+// Remove pagination
+// remove_action( 'genesis_after_endwhile', 'genesis_posts_nav' );
+
 
 // Replace page content with blog loop using wordpress loop
 // remove_action( 'genesis_loop', 'genesis_do_loop' );
-// add_action( 'genesis_loop', 'be_test_custom_loop' );
-// function be_test_custom_loop() {
-//   global $post;
+add_action( 'genesis_before_loop', 'be_test_custom_loop' );
+function be_test_custom_loop() {
+  global $post;
  
-// 	// arguments, adjust as needed
-// 	$args = array(
-// 		'post_type'      => 'post',
-// 		'posts_per_page' => 5,
-// 		'post_status'    => 'publish',
-// 		'paged'          => get_query_var( 'paged' ),
-// 	);
+	// arguments, adjust as needed
+	$args = array(
+		'post_type'      => 'post',
+		'posts_per_page' => 2,
+		'post_status'    => 'publish',
+		'paged'          => get_query_var( 'paged' ),
+	);
  
-// 	/* 
-// 	Overwrite $wp_query with our new query.
-// 	The only reason we're doing this is so the pagination functions work,
-// 	since they use $wp_query. If pagination wasn't an issue, 
-// 	use: https://gist.github.com/3218106
-// 	*/
-// 	global $wp_query;
-// 	$wp_query = new WP_Query( $args );
+	global $wp_query;
+	$wp_query = new WP_Query( $args );
  
-// 	if ( have_posts() ) : while ( have_posts() ) : the_post();
-// 		do_action( 'genesis_before_entry' );
+	if ( have_posts() ) : while ( have_posts() ) : the_post();
+		do_action( 'genesis_before_entry' );
 	
-// 		printf( '<article %s>', genesis_attr( 'entry' ) );
+		printf( '<article %s>', genesis_attr( 'entry' ) );
 	
-// 			do_action( 'genesis_entry_header' );
+			do_action( 'genesis_entry_header' );
 		
-// 			do_action( 'genesis_before_entry_content' );
-// 			printf( '<div %s>', genesis_attr( 'entry-content' ) );
-// 			printf ( the_content_limit(200, "Read more") );
-// 			echo '</div>'; //** end .entry-content
-// 			do_action( 'genesis_after_entry_content' );
+			do_action( 'genesis_before_entry_content' );
+			printf( '<div %s>', genesis_attr( 'entry-content' ) );
+			printf ( the_content_limit(100, "Read more") );
+			echo '</div>'; //** end .entry-content
+			do_action( 'genesis_after_entry_content' );
 			
-// 			do_action( 'genesis_entry_footer' );
+			do_action( 'genesis_entry_footer' );
 	
-// 		echo '</article>';
+		echo '</article>';
 	
-// 		do_action( 'genesis_after_entry' );
-// 		$loop_counter++;
-// 	endwhile; /** end of one post **/
-// 		do_action( 'genesis_after_endwhile' );
-// 	else : /** if no posts exist **/
-// 		do_action( 'genesis_loop_else' );
-// 	endif; /** end loop **/
+		do_action( 'genesis_after_entry' );
+		$loop_counter++;
+	endwhile; /** end of one post **/
+    // this is pagination 
+    // do_action( 'genesis_after_endwhile' );
+	else : /** if no posts exist **/
+		do_action( 'genesis_loop_else' );
+	endif; /** end loop **/
  
-// 	wp_reset_query();
-// }
+	wp_reset_query();
+}
 
 
 genesis();
